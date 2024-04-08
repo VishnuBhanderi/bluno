@@ -22,12 +22,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "CAMERA",
+        "CAMERA_ROLL"
+      ]
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "permissions": [
+        "CAMERA",
+        "CAMERA_ROLL"
+      ]
     },
     "plugins": [
       "expo-router"
