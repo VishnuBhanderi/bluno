@@ -1,34 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { View, TextInput, Button, Animated, StyleSheet, Dimensions, Text } from 'react-native';
 import { Context as UserContext } from '../contexts/UserContext';
-import styled from 'styled-components/native'; // Import styled from styled-components
 import Camera from './Camera';
 import FilePickerScreen from './IDProof';
 
-const StyledView = styled.View`
-  padding: 20px;
-`;
-
-const StyledTextInput = styled.TextInput`
-  height: 40px;
-  border-color: gray;
-  border-width: 1px;
-  margin-bottom: 10px;
-  padding: 0 10px;
-`;
-
-const StyledButton = styled.Button`
-  color: white;
-  background-color: #007bff;
-  padding: 10px;
-  border-radius: 5px;
-`;
-
-const AnimatedView = styled(Animated.View)`
-  overflow: hidden;
-`;
-
-const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 const RegistrationForm = () => {
   const { addUser } = useContext(UserContext);
@@ -42,7 +18,7 @@ const RegistrationForm = () => {
   const [isVisibleButton, setisVisibleButton] = useState(false);
   const [isVisibleSelfie, setisVisibleSelfie] = useState(false);
   const [isVisibleDoc, setisVisibleDoc] = useState(false);
-  const [rollAnimation] = useState(new Animated.Value(screenWidth)); // Initial value is set to screenWidth for entry from right
+  const [rollAnimation] = useState(new Animated.Value(screenHeight)); // Initial value is set to screenHeight for entry from bottom
 
   const handleRegistration = () => {
     // Validate inputs here if needed
@@ -57,23 +33,23 @@ const RegistrationForm = () => {
     setDocUri('');
   };
 
-  const animateForm = (toValue) => {
-    Animated.timing(rollAnimation, {
-      toValue,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-  };
+  // const animateForm = (toValue) => {
+  //   Animated.timing(rollAnimation, {
+  //     toValue,
+  //     duration: 500,
+  //     useNativeDriver: true,
+  //   }).start();
+  // };
 
-  const hadleNameChange = (text) => {  
+  const hadleNameChange = (text:string) => {  
     setName(text);
   };
 
-  const handleEmailChange = (text) => {
+  const handleEmailChange = (text:string) => {
     setEmail(text);
   };
 
-  const handlePhoneChange = (text) => {
+  const handlePhoneChange = (text:string) => {
     setMobileNo(text);
   };
 
@@ -81,7 +57,6 @@ const RegistrationForm = () => {
     if (!isVisibleEmail ) {
       setisVisibleEmail(true);
       setisVisibleName(false);
-      animateForm(0); // Translate animation to reveal email field
     }
   };
 
@@ -89,7 +64,6 @@ const RegistrationForm = () => {
     if (!isVisiblePhone ) {
       setisVisiblePhone(true);
       setisVisibleEmail(false);
-      animateForm(0); // Translate animation to reveal phone field
     }
   };
 
@@ -97,7 +71,6 @@ const RegistrationForm = () => {
     if (!isVisibleSelfie) {
       setisVisibleSelfie(true);
       setisVisiblePhone(false);
-      animateForm(0); // Translate animation to reveal button
     }
   };
 
@@ -105,15 +78,15 @@ const RegistrationForm = () => {
     if (!isVisibleButton) {
       setisVisibleDoc(true);
       setisVisibleSelfie(false);
-      animateForm(0);
     }
   };
 
   return (
-    <StyledView>
+    <View style={styles.container}>
       {isVisibleName && ( 
         <View style={styles.inputContainer}>         
-          <StyledTextInput
+          <TextInput
+            style={styles.input}
             placeholder="Name"
             value={name}
             onChangeText={hadleNameChange}
@@ -121,10 +94,11 @@ const RegistrationForm = () => {
           <Button title="Next" onPress={handleNameNext} />
         </View>
       )}
-      <AnimatedView style={{ transform: [{ translateX: rollAnimation }] }}>
+
         {isVisibleEmail && (
           <View style={styles.inputContainer}>
-            <StyledTextInput
+            <TextInput
+              style={styles.input}
               placeholder="Email"
               value={email}
               onChangeText={handleEmailChange}
@@ -132,11 +106,10 @@ const RegistrationForm = () => {
             <Button title="Next" onPress={handleEmailNext} />
           </View>
         )}
-      </AnimatedView>
-      <AnimatedView style={{ transform: [{ translateX: rollAnimation }] }}>
         {isVisiblePhone && (
           <View style={styles.inputContainer}>
-            <StyledTextInput
+            <TextInput
+              style={styles.input}
               placeholder="Mobile Number"
               value={mobileNo}
               onChangeText={handlePhoneChange}
@@ -144,30 +117,37 @@ const RegistrationForm = () => {
             <Button title="Next" onPress={handlePhoneNext} />
           </View>
         )}
-      </AnimatedView>
-      <AnimatedView style={{ transform: [{ translateX: rollAnimation }] }}>
+      
         {isVisibleSelfie && (
           <View style={styles.buttonContainer}>
             <Camera/>
             <Button title="Next" onPress={handleCameraNext} />
           </View>
         )}
-      </AnimatedView>
-      <AnimatedView style={{ transform: [{ translateX: rollAnimation }] }}>
+
         {isVisibleDoc && (
           <View style={styles.buttonContainer}>
             <FilePickerScreen/>
             <Button title="Register" onPress={handleRegistration} />
           </View>
         )}
-      </AnimatedView>
-    </StyledView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+  },
   inputContainer: {
     marginBottom: 20,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
   },
   buttonContainer: {
     width: '100%',
