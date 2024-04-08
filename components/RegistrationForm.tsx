@@ -3,6 +3,7 @@ import { View, TextInput, Button, Animated, StyleSheet, Dimensions, Text } from 
 import { Context as UserContext } from '../contexts/UserContext';
 import Camera from './Camera';
 import FilePickerScreen from './IDProof';
+import EmailInput from './EmailInput';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -41,27 +42,27 @@ const RegistrationForm = () => {
   //   }).start();
   // };
 
-  const hadleNameChange = (text:string) => {  
+  const hadleNameChange = (text: string) => {
     setName(text);
   };
 
-  const handleEmailChange = (text:string) => {
+  const handleEmailChange = (text: string) => {
     setEmail(text);
   };
 
-  const handlePhoneChange = (text:string) => {
+  const handlePhoneChange = (text: string) => {
     setMobileNo(text);
   };
 
   const handleNameNext = () => {
-    if (!isVisibleEmail ) {
+    if (!isVisibleEmail) {
       setisVisibleEmail(true);
       setisVisibleName(false);
     }
   };
 
   const handleEmailNext = () => {
-    if (!isVisiblePhone ) {
+    if (!isVisiblePhone) {
       setisVisiblePhone(true);
       setisVisibleEmail(false);
     }
@@ -83,8 +84,8 @@ const RegistrationForm = () => {
 
   return (
     <View style={styles.container}>
-      {isVisibleName && ( 
-        <View style={styles.inputContainer}>         
+      {isVisibleName && (
+        <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             placeholder="Name"
@@ -95,42 +96,40 @@ const RegistrationForm = () => {
         </View>
       )}
 
-        {isVisibleEmail && (
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={email}
-              onChangeText={handleEmailChange}
-            />
-            <Button title="Next" onPress={handleEmailNext} />
-          </View>
-        )}
-        {isVisiblePhone && (
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Mobile Number"
-              value={mobileNo}
-              onChangeText={handlePhoneChange}
-            />
-            <Button title="Next" onPress={handlePhoneNext} />
-          </View>
-        )}
-      
-        {isVisibleSelfie && (
-          <View style={styles.buttonContainer}>
-            <Camera/>
-            <Button title="Next" onPress={handleCameraNext} />
-          </View>
-        )}
+      {isVisibleEmail && (
+        <View style={styles.inputContainer}>
+          <EmailInput
+            email={email}
+            handleEmailChange={handleEmailChange}
+            handleEmailNext={handleEmailNext}
+          />
+        </View>
+      )}
+      {isVisiblePhone && (
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Mobile Number"
+            value={mobileNo}
+            onChangeText={handlePhoneChange}
+          />
+          <Button title="Next" onPress={handlePhoneNext} />
+        </View>
+      )}
 
-        {isVisibleDoc && (
-          <View style={styles.buttonContainer}>
-            <FilePickerScreen/>
-            <Button title="Register" onPress={handleRegistration} />
-          </View>
-        )}
+      {isVisibleSelfie && (
+        <View style={styles.buttonContainer}>
+          <Camera />
+          <Button title="Next" onPress={handleCameraNext} />
+        </View>
+      )}
+
+      {isVisibleDoc && (
+        <View style={styles.buttonContainer}>
+          <FilePickerScreen />
+          <Button title="Register" onPress={handleRegistration} />
+        </View>
+      )}
     </View>
   );
 };
